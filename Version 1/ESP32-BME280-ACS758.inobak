@@ -1,0 +1,79 @@
+    /////////////////////////////////////////////////////////////////
+   //         Sensor BME280 y 2x ACS758 (para mediar amperios)    //
+  //       cada ACS758 se lee con diferentes atenuaciones        //
+ //         version 1.0 Morrastronics 08/2018                   //
+/////////////////////////////////////////////////////////////////
+/************************************************************************
+**** al ADC CH0 (GPIO36) le conectamos el sensor de orriente del    *****
+**** panel solar, ya que para el sensor V=0.04*I, o sea, que puedo  ***** 
+**** medir hasta 27A con 1.1V (atenuacion 0)
+**** al ADC CH3 (GPIO39) le conecto el de bateria, que puede tener  *****
+**** cargas mas fuertes, como es bidireccional V=Vcc/2+-0.02*I      *****
+**** lo que da una corriente maxima de 70A con 3.9V (atenuacion 11) *****
+****  OJO con el sentido de la corriente, lo suyo es que la descarga ****
+**** sea positivo (se supone que el alternador da 80A)              *****
+************************************************************************/               
+#undef PRINT_SI
+#define PRINT_SI
+#ifdef PRINT_SI
+  #define DPRINT(...)    Serial.print(__VA_ARGS__)
+  #define DPRINTLN(...)  Serial.println(__VA_ARGS__)
+#else
+  #define DPRINT(...)     //linea en blanco
+  #define DPRINTLN(...)   //linea en blanco
+#endif
+
+#define ARDUINOJSON_ENABLE_PROGMEM 0
+#include <Adafruit_BME280.h> //https://github.com/Takatsuki0204/BME280-I2C-ESP32
+#include <ArduinoJson.h>    //https://github.com/bblanchon/ArduinoJson
+
+#define I2C_SDA 21 
+#define I2C_SCL 22
+#define ADC1_CH0 36
+#define ADC1_CH3 39
+#define BME280_ADDR 0x76  //Si no funciona, prueba con la direccion 0x77
+
+float temperatura,humedad,presion;
+int analog_0,analog_3;
+Adafruit_BME280 bme(I2C_SDA, I2C_SCL);
+
+void setup() 
+{ 
+  Serial.begin(115200);
+  // el ADC por defecto es a 12 bit (no lo toco),  cambio la atenuacion
+  // Atenuacion 0db   : rango 1.1V
+  //            2_5db : rango 1.5V
+  //            6fb   : rango 2.2V
+  //            11db  : rango 3.9V
+  analogSetPinAttenuation(ADC1_CH0, ADC_0db);   //puede ser 0, 2_5, 6 u 11 db
+  analogSetPinAttenuation(ADC1_CH3, ADC_11db);
+
+  initSensor();
+}
+
+void loop() {
+ 
+ delay(2000);
+ temperatura = bme.readTemperature();   
+ humedad = bme.readHumidity();
+ presion = bme.readPressure()/100.0F;
+ DPRINT("Temperatura=\t");DPRINTLN(temperatura);
+ DPRINT("humedad=\t");DPRINTLN(humedad);
+ DPRINT("presion=\t");DPRINTLN(presion);
+ analog_value = analogRead(ADC1_CH0);
+ DPRINT("Analogico=\t");DPRINTLN(analog_value);
+}
+
+
+
+void initSensor()
+{
+  bool status = bme.begin(BME280_ADDRESS);
+  if (!status) {
+    DPRINTLN("No encuentro sensor BME280");
+  }
+}
+
+
+
+
