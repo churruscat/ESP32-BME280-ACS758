@@ -16,6 +16,7 @@ char ssid1[] = "Your SSID1";
 char password1[] ="Password1";
 char ssid2[] ="Your SSID2";
 char password2[] = "Password2";
+#include <personal.h>
 /*************************************************
  ** ----- Fin de Valores Personalizados ------- **
  * ***********************************************/

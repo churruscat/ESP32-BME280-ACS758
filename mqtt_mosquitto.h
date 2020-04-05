@@ -12,10 +12,11 @@
 #define DEVICE_ID "M_Oscura_1"
 char* ssid;
 char* password;
-char ssid1[] = "Materia_Oscura";
-char password1[] ="Viva1la2Vela";
-char ssid2[] ="Materia_Oscura";
-char password2[] = "Viva1la2Vela";
+char ssid1[] = "Your SSID1";
+char password1[] ="Password1";
+char ssid2[] ="Your SSID2";
+char password2[] = "Password2";
+#include <personal.h>
 /*************************************************
  ** ----- Fin de Valores Personalizados ------- **
  * ***********************************************/
