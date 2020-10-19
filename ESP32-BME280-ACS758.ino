@@ -85,12 +85,12 @@ void setup()
   // ajusto la sensibilidad  de CH0 (36, Solar) y CH3 (39, bat)
   analogSetPinAttenuation(ADC1_CH0,ADC_0db) ;
   analogSetPinAttenuation(ADC1_CH3,ADC_11db);  
-  wifiConnect();
-  mqttConnect();
+  //wifiConnect();
+  //mqttConnect();
   delay(50);
-  initManagedDevice(); 
+  //initManagedDevice(); 
   tomaDatos();
-  publicaDatos();
+  //publicaDatos();
 }
 
 uint32_t ultima=0;
@@ -98,14 +98,14 @@ uint32_t ultima=0;
 void loop() 
 {
   DPRINT("*");
-  if (!loopMQTT()) {  // leo si hay mensajes de IoT y si tengo conexion    
+  /*if (!loopMQTT()) {  // leo si hay mensajes de IoT y si tengo conexion    
    DPRINTLN("He perdido la conexion,reconecto");
    sinConectividad();        
    mqttConnect();
    initManagedDevice();  // Hay que suscribirse cada vez
   } 
-  tomaDatos();
-  publicaDatos();
+  */tomaDatos();
+  //publicaDatos();
   ultima=millis();
   espera(1000);
 }

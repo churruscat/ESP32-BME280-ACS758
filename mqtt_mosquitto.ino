@@ -110,7 +110,7 @@ void funcallback(char* topic, byte* payload, unsigned int payloadLength)
 
 void handleUpdate(byte* payload) 
 {
-  StaticJsonBuffer<JSONBUFFSIZE> jsonBuffer; 
+  /*StaticJsonBuffer<JSONBUFFSIZE> jsonBuffer; 
   JsonObject& root = jsonBuffer.parseObject((char*)payload);
   boolean cambia=false,pubresult;
   char sensor[20],elpayload[150];
@@ -129,7 +129,7 @@ void handleUpdate(byte* payload)
     DPRINTLN(sensor);
     return;
    }
-  }
+  }*/
   return;
 }
 
